@@ -3,7 +3,10 @@ package com.ubiquisoft.evaluation.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @XmlRootElement
@@ -31,7 +34,40 @@ public class Car {
 		 *      }
 		 */
 
-		return null;
+		Map<PartType, Integer> missingPartsMap = new HashMap<PartType, Integer>();
+
+		// create a list of PartTypes and then check how many instances of each type there are
+		List<PartType> partTypeList = new ArrayList<PartType>();
+		for (Part part : this.getParts()) {
+			partTypeList.add(part.getType());
+		}
+
+		int numberOfEngines = Collections.frequency(partTypeList, PartType.ENGINE);
+		if (numberOfEngines != 1) {
+			missingPartsMap.put(PartType.ENGINE, new Integer(numberOfEngines));
+		}
+
+		int numberOfElectricals = Collections.frequency(partTypeList, PartType.ELECTRICAL);
+		if (numberOfElectricals != 1) {
+			missingPartsMap.put(PartType.ELECTRICAL, new Integer(numberOfElectricals));
+		}
+
+		int numberOfFuelFilters = Collections.frequency(partTypeList, PartType.FUEL_FILTER);
+		if (numberOfFuelFilters != 1) {
+			missingPartsMap.put(PartType.FUEL_FILTER, new Integer(numberOfFuelFilters));
+		}
+
+		int numberOfOilFilters = Collections.frequency(partTypeList, PartType.OIL_FILTER);
+		if (numberOfOilFilters != 1) {
+			missingPartsMap.put(PartType.OIL_FILTER, new Integer(numberOfOilFilters));
+		}
+
+		int numberOfTires = Collections.frequency(partTypeList, PartType.TIRE);
+		if (numberOfTires != 4) {
+			missingPartsMap.put(PartType.TIRE, new Integer(numberOfTires));
+		}
+
+		return missingPartsMap;
 	}
 
 	@Override
